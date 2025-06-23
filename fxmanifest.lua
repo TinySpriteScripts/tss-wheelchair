@@ -5,9 +5,9 @@ lua54 'yes'
 name "TSS-Wheelchair"
 author "TinySpriteScripts"
 description "Use of Wheelchairs"
-version "1.0"
+version "1.0.1"
 discord "https://discord.gg/ZMFfC54FdJ"
-tebex "https://tinyspritescripts.tebex.io/"
+tebex "https://tinysprite-scripts.tebex.io/"
 
 dependency 'jim_bridge' -- https://github.com/jimathy/jim_bridge
 
