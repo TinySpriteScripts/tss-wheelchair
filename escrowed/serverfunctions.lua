@@ -7,8 +7,47 @@ function MakeStash(data)
 	local owner = data.owner or nil
 	local groups = data.groups or nil
 	local coords = data.coords or nil
-	exports.ox_inventory:RegisterStash(id, label, slots, maxWeight, owner, groups, coords)
-	Debug("^5Debug^7: ^3Registering ^2Stash^7: ^3", id, label, slots, maxWeight, owner, groups, coords)
+
+	-- ox_inventory support
+	if GetResourceState(OXInv):find("start") then
+		exports[OXInv]:RegisterStash(id, label, slots, maxWeight, owner, groups, coords)
+		debugPrint("^5Debug^7: ^3Registering OX Stash^7: ^3", id, label, slots, maxWeight, owner, groups, coords)
+
+	-- qb-inventory support
+	elseif GetResourceState(QBInv):find("start") then
+		TriggerEvent("inventory:server:OpenInventory", "stash", id, { maxweight = maxWeight, slots = slots, label = label })
+		debugPrint("^5Debug^7: ^3Registering QB Stash^7: ^3", id, label, slots, maxWeight)
+
+	-- ps-inventory support
+	elseif GetResourceState(PSInv):find("start") then
+		exports[PSInv]:RegisterStash(id, label, slots, maxWeight, owner)
+		debugPrint("^5Debug^7: ^3Registering PS Stash^7: ^3", id, label, slots, maxWeight)
+
+	-- qs-inventory support
+	elseif GetResourceState(QSInv):find("start") then
+		exports[QSInv]:RegisterStash(id, label, slots, maxWeight, owner)
+		debugPrint("^5Debug^7: ^3Registering QS Stash^7: ^3", id, label, slots, maxWeight)
+
+	-- core_inventory support
+	elseif GetResourceState(CoreInv):find("start") then
+		exports[CoreInv]:RegisterStash(id, label, slots, maxWeight)
+		debugPrint("^5Debug^7: ^3Registering Core Stash^7: ^3", id, label, slots, maxWeight)
+
+	-- codem_inventory support
+	elseif GetResourceState(CodeMInv):find("start") then
+		exports[CodeMInv]:RegisterStash(id, label, slots, maxWeight)
+		debugPrint("^5Debug^7: ^3Registering Codem Stash^7: ^3", id, label, slots, maxWeight)
+
+	-- origen_inventory support
+	elseif GetResourceState(OrigenInv):find("start") then
+		exports[OrigenInv]:RegisterStash(id, label, slots, maxWeight)
+		debugPrint("^5Debug^7: ^3Registering Origen Stash^7: ^3", id, label, slots, maxWeight)
+
+	-- Unsupported inventory system
+	else
+		print("^1Error: Unsupported inventory system detected.^7")
+		return
+	end
 end
 
 
@@ -80,7 +119,7 @@ end
 -- └───────────────────────────────┘
 
 -- Check inv Slots
-RegisterNetEvent(GetCurrentResourceName()..":Server:CheckInventorySlots", function(id, requiredSlots)
+RegisterNetEvent(getScript()..":Server:CheckInventorySlots", function(id, requiredSlots)
     local src = source
     local totalSlots = Config.System.InvSlots
     local usedSlots = 0
@@ -139,7 +178,7 @@ RegisterNetEvent(GetCurrentResourceName()..":Server:CheckInventorySlots", functi
     local canCarry = freeSlots >= requiredSlots
 
     -- Trigger client event with result
-    TriggerClientEvent(GetCurrentResourceName()..":Client:InventorySlotsChecked", src, id, canCarry)
+    TriggerClientEvent(getScript()..":Client:InventorySlotsChecked", src, id, canCarry)
 end)
 
 -- Utility function to check if a table includes a value
@@ -155,29 +194,29 @@ end
 
 -- TinySprite Scripts Server Console Print
 local NotUpToDate = [[
-|||^2 |‾‾‾|/‾‾‾\ /‾‾‾\  ^7||| ^1%s^7 ^7(^1%s^7) → ^2%s^7 available! Update at ^6portal.cfx.re^7
-|||^2   |  \__‾‾\\__‾‾\ ^7|||
-|||^2   |   |___/ |___/ ^7||| ^2TinySprite Scripts^7 | ^6%s^7 ]]
+|||^2  |‾‾‾|/‾‾‾\ /‾‾‾\  ^7||| ^1%s^7 ^7(^1%s^7) → ^2%s^7 available! Update at ^6portal.cfx.re^7
+|||^2    |  \__‾‾\\__‾‾\ ^7|||
+|||^2    |   |___/ |___/ ^7||| ^2TinySprite Scripts^7 | ^6%s^7 ]]
 
 local UpToDate = [[
-|||^2 |‾‾‾|/‾‾‾\ /‾‾‾\  ^7||| ^2%s^7
-|||^2   |  \__‾‾\\__‾‾\ ^7|||
-|||^2   |   |___/ |___/ ^7||| ^2TinySprite Scripts^7 | ^6%s^7 ]]
+|||^2  |‾‾‾|/‾‾‾\ /‾‾‾\  ^7||| ^2%s^7
+|||^2    |  \__‾‾\\__‾‾\ ^7|||
+|||^2    |   |___/ |___/ ^7||| ^2TinySprite Scripts^7 | ^6%s^7 ]]
 
 local Error = [[
-|||^2 |‾‾‾|/‾‾‾\ /‾‾‾\  ^7||| ^1ERROR:^7 There was an error getting the latest version information.
-|||^2   |  \__‾‾\\__‾‾\ ^7|||
-|||^2   |   |___/ |___/ ^7||| ^2TinySprite Scripts^7 | ^6%s^7 ]]
+|||^2  |‾‾‾|/‾‾‾\ /‾‾‾\  ^7||| ^1ERROR:^7 There was an error getting the latest version information.
+|||^2    |  \__‾‾\\__‾‾\ ^7|||
+|||^2    |   |___/ |___/ ^7||| ^2TinySprite Scripts^7 | ^6%s^7 ]]
 
 local ResourceNameWarning = [[
 ^1ERROR:^7 Wrong Resource Name Detected!!!
-|||^2 |‾‾‾|/‾‾‾\ /‾‾‾\  ^7||| Resource name is not ^2%s^7, expect there to be issues with the resource.
-|||^2   |  \__‾‾\\__‾‾\ ^7||| ^5Rename the script back to^7: ^2%s^7 To Receive Support!
-|||^2   |   |___/ |___/ ^7||| ^2TinySprite Scripts^7 | ^6%s^7 ]]
+|||^2  |‾‾‾|/‾‾‾\ /‾‾‾\  ^7||| Resource name is not ^2%s^7, expect there to be issues with the resource.
+|||^2    |  \__‾‾\\__‾‾\ ^7||| ^5Rename the script back to^7: ^2%s^7 To Receive Support!
+|||^2    |   |___/ |___/ ^7||| ^2TinySprite Scripts^7 | ^6%s^7 ]]
 
 -- Fetches the latest version, name, and Discord link from the .txt file
 local function GetCurrentVersion()
-	local versionURL = ("https://raw.githubusercontent.com/TinySpriteScripts/version_check/main/%s-version.txt"):format(GetCurrentResourceName())
+	local versionURL = ("https://raw.githubusercontent.com/TinySpriteScripts/version_check/main/%s-version.txt"):format(getScript())
 	PerformHttpRequest(versionURL, function(err, responseText, headers)
 		Wait(3000)
 		if err ~= 200 or not responseText or responseText == "" then print(Error:format("Unknown Discord Link")) return end
@@ -187,7 +226,7 @@ local function GetCurrentVersion()
 		if #lines < 3 then print(Error:format("Unknown Discord Link")) return end
 
 		local latestVersion, expectedName, discordLink = lines[1], lines[2], lines[3]
-		local currentVersion, currentName = GetResourceMetadata(GetCurrentResourceName(), "version"), GetCurrentResourceName()
+		local currentVersion, currentName = GetResourceMetadata(getScript(), "version"), getScript()
 
 		if currentName ~= expectedName then print(ResourceNameWarning:format(expectedName, expectedName)) return end
 

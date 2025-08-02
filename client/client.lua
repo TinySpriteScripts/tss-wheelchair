@@ -6,7 +6,7 @@
 
 local wheelchairs = {}
 
-RegisterNetEvent(GetCurrentResourceName()..":client:wheelchair", function(item)
+RegisterNetEvent(getScript()..":client:wheelchair", function(item)
     local model = Config.WheelchairVeh
     local ped = PlayerPedId()
     local pedId = tostring(ped)

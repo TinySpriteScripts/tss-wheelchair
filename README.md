@@ -11,12 +11,7 @@ Need help with setup or encountering issues? Join our Discord: [Join Support Ser
 
 ## 🧰 Installation
 
-1. Create a folder called `[tinysprite]` in your server resources directory (if not already existing)
-2. Place the `tss-wheelchair` resource in that subfolder
-3. Ensure it is started in your `server.cfg`:
-   ```cfg
-   ensure [tinysprite]
-   ```
+- Visit http://tinyspritescripts.gitbook.io/ for installation instructions
 
 ---
 
