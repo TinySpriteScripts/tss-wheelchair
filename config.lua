@@ -4,9 +4,17 @@ Config = {
 	System = {
 		Debug = false,			-- set true to view target/ped areas
 		Menu = "ox",			-- "qb", "ox"
-		Notify = "ox",			-- "qb", "ox", "esx, "okok", "gta"
-		ProgressBar = "ox", 	-- "qb", "ox"
+		Notify = "qb",			-- "qb", "ox", "esx, "okok", "gta"
+		ProgressBar = "qb", 	-- "qb", "ox"
 	},
-    WheelchairVeh = "iak_wheelchair",	-- https://www.gta5-mods.com/vehicles/wheelchair-add-on-sp-fivem
-    WheelchairItem = "wheelchair",
+	Vehicles = {
+		['wheelchair'] = { --itemcode
+			Model = "iak_wheelchair", -- https://www.gta5-mods.com/vehicles/wheelchair-add-on-sp-fivem
+			Label = "Wheelchair",
+		},
+		['cruiser'] = {
+			Model = "cruiser",
+			Label = "Cruiser",
+		},
+	},
 }

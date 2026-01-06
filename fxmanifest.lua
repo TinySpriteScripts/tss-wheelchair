@@ -5,7 +5,7 @@ lua54 'yes'
 name "TSS-Wheelchair"
 author "TinySprite-Scripts"
 description "Use of Wheelchairs"
-version "1.0.2"
+version "1.0.3"
 discord "https://discord.gg/ZMFfC54FdJ"
 tebex "https://tinysprite-scripts.tebex.io/"
 
